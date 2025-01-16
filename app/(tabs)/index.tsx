@@ -17,35 +17,22 @@ export default function FormScreen() {
   const [passwordError, setPasswordError] = useState('');
 
   const validateEmail = (value: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(value)) {
-      setEmailError('Please enter a valid email');
-    } else {
-      setEmailError('');
-    }
+    const validateEmailInput = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmailError(!validateEmailInput.test(value) ? 'Please enter a valid email' : '');
   };
-
+  
   const validatePassword = (value: string) => {
-    if (value.length < 6) {
-      setPasswordError('Password must be at least 6 characters');
-    } else {
-      setPasswordError('');
-    }
+    setPasswordError(value.length < 6 ? 'Password must be at least 6 characters' : '');
   };
-
+  
   const handleSubmit = () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill in both fields');
-      return;
-    }
-
-    if (emailError || passwordError) {
-      Alert.alert('Error', 'Please fix the validation errors');
-      return;
-    }
-
-    setModalVisible(true);
+    !email || !password
+      ? Alert.alert('Error', 'Please fill in both fields')
+      : emailError || passwordError
+      ? Alert.alert('Error', 'Please fix the validation errors')
+      : setModalVisible(true);
   };
+  
 
   return (
     <View style={styles.container}>
