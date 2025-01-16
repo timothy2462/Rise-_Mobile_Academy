@@ -35,6 +35,7 @@ export default function FormScreen() {
   
 
   return (
+    <>
     <View style={styles.container}>
       <Text style={styles.label}>Email:</Text>
       <TextInput
@@ -88,6 +89,7 @@ export default function FormScreen() {
         </View>
       </Modal>
     </View>
+    </>
   );
 }
 
