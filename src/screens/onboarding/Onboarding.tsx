@@ -17,10 +17,11 @@ export function Onboarding() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
 
-
-const viewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
-    setCurrentSlide(viewableItems[0].index || 0);
-  }).current;
+  const viewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      setCurrentSlide(viewableItems[0].index || 0);
+    }
+  ).current;
 
   const slideRef = useRef<FlatList | null>(null);
 
@@ -38,7 +39,7 @@ const viewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewTok
     <View style={styles.container}>
       <FlatList
         data={SLIDES}
-        renderItem={({ item }) => <OnboardingItem item={item} />}
+        renderItem={({ item }) => <OnboardingItem item={item} width={0} />}
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
@@ -53,21 +54,24 @@ const viewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewTok
         viewabilityConfig={viewConfig}
         ref={slideRef}
       />
-      <View style={styles.bottomContainer}>
-        <View style={styles.paginatorContainer}>
-          <Paginator
-            currentSlide={currentSlide}
-            data={SLIDES}
-            scrollX={scrollX}
-            containerStyle={styles.paginator}
-          />
-        </View>
-        <TouchableOpacity onPress={scrollToNextSlide} style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>
-            {currentSlide === SLIDES.length - 1 ? "Sign up" : "Next"}
-          </Text>
-        </TouchableOpacity>
+
+      <View style={styles.paginatorContainer}>
+        <Paginator
+          currentSlide={currentSlide}
+          data={SLIDES}
+          scrollX={scrollX}
+          containerStyle={styles.paginator}
+        />
       </View>
+
+      <Text style={styles.description}>{SLIDES[currentSlide].description}</Text>
+
+      <TouchableOpacity onPress={scrollToNextSlide} style={styles.nextButton}>
+        <Text style={styles.nextButtonText}>
+          {currentSlide === SLIDES.length - 1 ? "Sign up" : "Next"}
+        </Text>
+      </TouchableOpacity>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -76,33 +80,42 @@ const viewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewTok
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",   
+    alignItems: "center",
     justifyContent: "center",
     height: "100%",
-  },
-  bottomContainer: {
-    marginBottom: 52, 
   },
   paginatorContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 16, 
+    // marginBottom: 20,
   },
   paginator: {
-    marginTop: 32, 
+    marginTop: 32,
+  },
+  description: {
+    textAlign: "center",
+    fontSize: 30,
+    fontWeight: "500",
+    fontFamily: "Poppins-Medium",
+    color: "#1A1A1A",
+    marginBottom: 50,
+    width: 300,
   },
   nextButton: {
-    backgroundColor: "#1D4ED8", 
-    paddingVertical: 12, 
-    paddingHorizontal: 32, 
-    borderRadius: 22, 
+    backgroundColor: "#1D4ED8",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 30,
     alignItems: "center",
-    width: 300,
+    width: 320,
+    marginBottom: 40,
   },
   nextButtonText: {
     color: "white",
-    fontSize: 16, 
-    fontWeight: "600", 
+    fontSize: 16,
+    fontWeight: "600",
+    fontFamily: "Poppins-Medium",
+
   },
 });
